@@ -38,7 +38,8 @@ class Training:
             self,
             action: int,
             duration: float,
-            weight: float) -> None:
+            weight: float
+    ) -> None:
         self.action = action
         self.duration = duration
         self.weight = weight
@@ -82,9 +83,13 @@ class Running(Training):
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         return (
-            (self.CALORIES_MEAN_SPEED_MULTIPLIER * self.get_mean_speed()
-             - self.CALORIES_MEAN_SPEED_DIFFERENCE)
-            * self.weight / self.M_IN_KM * self.get_duration_in_minutes()
+            (
+                self.CALORIES_MEAN_SPEED_MULTIPLIER * self.get_mean_speed()
+                - self.CALORIES_MEAN_SPEED_DIFFERENCE
+            )
+            * self.weight
+            / self.M_IN_KM
+            * self.get_duration_in_minutes()
         )
 
 
@@ -100,18 +105,19 @@ class SportsWalking(Training):
             action: int,
             duration: float,
             weight: float,
-            height: float) -> None:
+            height: float
+    ) -> None:
         super().__init__(action, duration, weight)
         self.height = height
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         return (
-            (self.CALORIES_MEAN_WEIGHT_MULTIPLIER * self.weight
-             + (self.get_mean_speed()**2 // self.height)
-             * self.CALORIES_MEAN_SPEED_BY_HEIGHT_MULTIPLIER * self.weight)
-            * self.get_duration_in_minutes()
-        )
+            self.CALORIES_MEAN_WEIGHT_MULTIPLIER 
+            * self.weight
+            + (self.get_mean_speed()**2 // self.height)
+            * self.CALORIES_MEAN_SPEED_BY_HEIGHT_MULTIPLIER * self.weight
+        ) * self.get_duration_in_minutes()
 
 
 class Swimming(Training):
@@ -129,7 +135,8 @@ class Swimming(Training):
             duration: float,
             weight: float,
             length_pool: float,
-            count_pool: float) -> None:
+            count_pool: float
+    ) -> None:
         super().__init__(action, duration, weight)
         self.length_pool = length_pool
         self.count_pool = count_pool
@@ -161,7 +168,7 @@ def read_package(workout_type: str, data: list) -> Training:
     if workout_type not in class_by_training:
         raise KeyError(
             'The workout type does not exist in the list: '
-            + ', '.join(class_by_training.keys())
+            + ', '.join(class_by_training)
         )
     return class_by_training[workout_type](*data)
 
